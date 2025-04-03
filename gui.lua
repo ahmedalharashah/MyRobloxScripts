@@ -1,7 +1,7 @@
 local UserInputService = game:GetService("UserInputService")
 local HttpService = game:GetService("HttpService")
 
--- رابط ملف السكربتات على GitHub
+-- رابط ملف JSON على GitHub
 local scriptsURL = "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/scripts.json"
 
 -- إنشاء GUI
@@ -44,6 +44,12 @@ local function updateGUI()
         local data = HttpService:JSONDecode(response)
         local scripts = data.scripts
 
+        -- التحقق من وجود سكربتات
+        if not scripts or #scripts == 0 then
+            print("❌ لا يوجد سكربتات في JSON")
+            return
+        end
+
         -- تعديل حجم الإطار بناءً على عدد الأزرار
         frame.Size = UDim2.new(0, 350, 0, 50 + (#scripts * 60))
 
@@ -61,11 +67,17 @@ local function updateGUI()
 
             -- تشغيل السكربت عند الضغط على الزر
             button.MouseButton1Click:Connect(function()
-                loadstring(game:HttpGet(script.url))()
+                local success, err = pcall(function()
+                    loadstring(game:HttpGet(script.url))()
+                end)
+
+                if not success then
+                    print("❌ فشل في تحميل السكربت:", err)
+                end
             end)
         end
     else
-        print("❌ فشل في جلب بيانات السكربتات")
+        print("❌ فشل في جلب بيانات السكربتات:", response)
     end
 end
 
