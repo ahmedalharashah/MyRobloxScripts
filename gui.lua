@@ -25,10 +25,45 @@ script2Button.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 -- تشغيل السكربت الأول عند الضغط على الزر
 script1Button.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/refs/heads/main/script1.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script1.lua"))()
 end)
 
 -- تشغيل السكربت الثاني عند الضغط على الزر
 script2Button.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/refs/heads/main/script2.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script2.lua"))()
+end)
+
+-- جعل الواجهة قابلة للتحريك
+local dragging = false
+local dragInput, dragStart, startPos
+
+frame.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- إظهار/إخفاء الواجهة باستخدام زر Insert
+local toggleVisibility = true
+game:GetService("UserInputService").InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Insert then
+        toggleVisibility = not toggleVisibility
+        frame.Visible = toggleVisibility
+    end
 end)
