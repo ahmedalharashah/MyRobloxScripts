@@ -2,7 +2,7 @@ local UserInputService = game:GetService("UserInputService")
 local HttpService = game:GetService("HttpService")
 
 -- رابط ملف JSON على GitHub
-local scriptsURL = "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/refs/heads/main/scripts.json"
+local scriptsURL = "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/scripts.json"
 
 -- إنشاء GUI
 local ui = Instance.new("ScreenGui")
@@ -84,7 +84,7 @@ end
 -- تشغيل تحديث الواجهة عند بدء التشغيل
 updateGUI()
 
--- إظهار/إخفاء الواجهة عند الضغط على زر Insert
+-- تحديث الواجهة عند الضغط على زر Insert
 UserInputService.InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.Insert then
         frame.Visible = not frame.Visible
@@ -100,3 +100,9 @@ UserInputService.InputBegan:Connect(function(input)
         end
     end
 end)
+
+-- متابعة التغييرات في ملف JSON وتحديث الواجهة تلقائيًا
+while true do
+    wait(30)  -- تحقق كل 30 ثانية (يمكنك تغيير الوقت حسب الحاجة)
+    updateGUI()  -- تحديث الواجهة
+end
