@@ -2,7 +2,7 @@ local UserInputService = game:GetService("UserInputService")
 local HttpService = game:GetService("HttpService")
 
 -- رابط ملف JSON على GitHub
-local scriptsURL = "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/scripts.json"
+local scriptsURL = "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/refs/heads/main/scripts.json"
 
 -- إنشاء GUI
 local ui = Instance.new("ScreenGui")
@@ -84,9 +84,19 @@ end
 -- تشغيل تحديث الواجهة عند بدء التشغيل
 updateGUI()
 
--- تحديث الواجهة عند الضغط على زر Insert
+-- إظهار/إخفاء الواجهة عند الضغط على زر Insert
 UserInputService.InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.Insert then
         frame.Visible = not frame.Visible
+    end
+end)
+
+-- إيقاف السكربت عند الضغط على زر End
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.End then
+        if ui then
+            ui:Destroy() -- حذف الـ GUI بالكامل
+            print("✅ تم إيقاف السكربت وحذف الواجهة!")
+        end
     end
 end)
