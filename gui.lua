@@ -1,36 +1,22 @@
 local UserInputService = game:GetService("UserInputService")
+local HttpService = game:GetService("HttpService")
 
--- إنشاء ScreenGui
+-- رابط ملف السكربتات على GitHub
+local scriptsURL = "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/scripts.json"
+
+-- إنشاء GUI
 local ui = Instance.new("ScreenGui")
 ui.Parent = game.CoreGui
-ui.Name = "CustomGUI"
+ui.Name = "DynamicGUI"
 
--- إنشاء الإطار الرئيسي
 local frame = Instance.new("Frame")
 frame.Parent = ui
-frame.Size = UDim2.new(0, 350, 0, 250)
+frame.Size = UDim2.new(0, 350, 0, 50) -- سيتم تعديل الحجم تلقائياً
 frame.Position = UDim2.new(0.5, -175, 0.5, -125)
 frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-frame.BackgroundTransparency = 0.1
-frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 
--- إضافة تأثير الحدود (Stroke)
-local stroke = Instance.new("UIStroke")
-stroke.Parent = frame
-stroke.Thickness = 2
-stroke.Color = Color3.fromRGB(255, 255, 255)
-
--- إضافة تأثير التدرج اللوني (Gradient)
-local gradient = Instance.new("UIGradient")
-gradient.Parent = frame
-gradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 150, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 150))
-}
-
--- إنشاء عنوان في الأعلى
 local title = Instance.new("TextLabel")
 title.Parent = frame
 title.Size = UDim2.new(1, 0, 0, 30)
@@ -40,43 +26,55 @@ title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 20
 
--- إنشاء زر السكربت الأول
-local script1Button = Instance.new("TextButton")
-script1Button.Parent = frame
-script1Button.Size = UDim2.new(0.9, 0, 0, 50)
-script1Button.Position = UDim2.new(0.05, 0, 0.2, 0)
-script1Button.Text = "تشغيل السكربت الأول"
-script1Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-script1Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-script1Button.Font = Enum.Font.SourceSansBold
-script1Button.TextSize = 18
+-- تحديث الواجهة تلقائيًا عند إضافة أزرار جديدة
+local function updateGUI()
+    -- حذف الأزرار القديمة (إذا كانت موجودة)
+    for _, child in ipairs(frame:GetChildren()) do
+        if child:IsA("TextButton") then
+            child:Destroy()
+        end
+    end
 
--- إنشاء زر السكربت الثاني
-local script2Button = Instance.new("TextButton")
-script2Button.Parent = frame
-script2Button.Size = UDim2.new(0.9, 0, 0, 50)
-script2Button.Position = UDim2.new(0.05, 0, 0.5, 0)
-script2Button.Text = "تشغيل السكربت الثاني"
-script2Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-script2Button.TextColor3 = Color3.fromRGB(255, 255, 255)
-script2Button.Font = Enum.Font.SourceSansBold
-script2Button.TextSize = 18
+    -- جلب قائمة السكربتات من GitHub
+    local success, response = pcall(function()
+        return HttpService:GetAsync(scriptsURL)
+    end)
 
--- تشغيل السكربت الأول عند الضغط على الزر
-script1Button.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script1.lua"))()
-end)
+    if success then
+        local data = HttpService:JSONDecode(response)
+        local scripts = data.scripts
 
--- تشغيل السكربت الثاني عند الضغط على الزر
-script2Button.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script2.lua"))()
-end)
+        -- تعديل حجم الإطار بناءً على عدد الأزرار
+        frame.Size = UDim2.new(0, 350, 0, 50 + (#scripts * 60))
 
--- إظهار/إخفاء الواجهة باستخدام زر Insert
-local visible = true
+        -- إنشاء الأزرار بناءً على البيانات
+        for i, script in ipairs(scripts) do
+            local button = Instance.new("TextButton")
+            button.Parent = frame
+            button.Size = UDim2.new(0.9, 0, 0, 50)
+            button.Position = UDim2.new(0.05, 0, 0, 40 + (i - 1) * 60)
+            button.Text = script.name
+            button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            button.Font = Enum.Font.SourceSansBold
+            button.TextSize = 18
+
+            -- تشغيل السكربت عند الضغط على الزر
+            button.MouseButton1Click:Connect(function()
+                loadstring(game:HttpGet(script.url))()
+            end)
+        end
+    else
+        print("❌ فشل في جلب بيانات السكربتات")
+    end
+end
+
+-- تشغيل تحديث الواجهة عند بدء التشغيل
+updateGUI()
+
+-- تحديث الواجهة عند الضغط على زر Insert
 UserInputService.InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.Insert then
-        visible = not visible
-        frame.Visible = visible
+        frame.Visible = not frame.Visible
     end
 end)
