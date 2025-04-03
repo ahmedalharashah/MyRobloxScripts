@@ -41,7 +41,7 @@ title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 20
 
--- تحديث الواجهة تلقائيًا عند إضافة أزرار جديدة
+-- دالة لتحديث الواجهة بناءً على السكربتات الموجودة في JSON
 local function updateGUI()
     -- حذف الأزرار القديمة (إذا كانت موجودة)
     for _, child in ipairs(scrollFrame:GetChildren()) do
