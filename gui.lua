@@ -25,10 +25,10 @@ script2Button.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 -- تشغيل السكربت الأول عند الضغط على الزر
 script1Button.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO/main/script1.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/refs/heads/main/script1.lua"))()
 end)
 
 -- تشغيل السكربت الثاني عند الضغط على الزر
 script2Button.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO/main/script2.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/refs/heads/main/script2.lua"))()
 end)
