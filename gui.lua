@@ -65,9 +65,6 @@ local function updateGUI()
             return
         end
 
-        -- تعديل حجم الـ CanvasSize بناءً على عدد الأزرار
-        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 60 * #scripts)
-
         -- إنشاء الأزرار بناءً على البيانات
         for i, script in ipairs(scripts) do
             local button = Instance.new("TextButton")
@@ -90,6 +87,9 @@ local function updateGUI()
                 end
             end)
         end
+
+        -- تعديل حجم الـ CanvasSize بناءً على عدد الأزرار
+        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 60 * #scripts)
     else
         print("❌ فشل في جلب بيانات السكربتات:", response)
     end
