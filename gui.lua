@@ -11,11 +11,26 @@ ui.Name = "DynamicGUI"
 
 local frame = Instance.new("Frame")
 frame.Parent = ui
-frame.Size = UDim2.new(0, 350, 0, 50) -- سيتم تعديل الحجم تلقائياً
-frame.Position = UDim2.new(0.5, -175, 0.5, -125)
+frame.Size = UDim2.new(0, 350, 0, 400) -- الحجم يمكن تعديله حسب الحاجة
+frame.Position = UDim2.new(0.5, -175, 0.5, -200)
 frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 frame.Active = true
 frame.Draggable = true
+
+-- إضافة ScrollingFrame داخل الـ Frame لتوفير ميزة التمرير
+local scrollFrame = Instance.new("ScrollingFrame")
+scrollFrame.Parent = frame
+scrollFrame.Size = UDim2.new(1, 0, 1, -40)  -- يسمح بالتمرير داخل الـ Frame
+scrollFrame.Position = UDim2.new(0, 0, 0, 30)
+scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)  -- سيتم تعديله لاحقًا
+scrollFrame.BackgroundTransparency = 1
+scrollFrame.ScrollBarThickness = 10
+
+-- إضافة UIListLayout لتهيئة ترتيب الأزرار داخل ScrollingFrame
+local uiListLayout = Instance.new("UIListLayout")
+uiListLayout.Parent = scrollFrame
+uiListLayout.Padding = UDim.new(0, 10) -- المسافة بين الأزرار
+uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 local title = Instance.new("TextLabel")
 title.Parent = frame
@@ -29,7 +44,7 @@ title.TextSize = 20
 -- تحديث الواجهة تلقائيًا عند إضافة أزرار جديدة
 local function updateGUI()
     -- حذف الأزرار القديمة (إذا كانت موجودة)
-    for _, child in ipairs(frame:GetChildren()) do
+    for _, child in ipairs(scrollFrame:GetChildren()) do
         if child:IsA("TextButton") then
             child:Destroy()
         end
@@ -50,15 +65,14 @@ local function updateGUI()
             return
         end
 
-        -- تعديل حجم الإطار بناءً على عدد الأزرار
-        frame.Size = UDim2.new(0, 350, 0, 50 + (#scripts * 60))
+        -- تعديل حجم الـ CanvasSize بناءً على عدد الأزرار
+        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 60 * #scripts)
 
         -- إنشاء الأزرار بناءً على البيانات
         for i, script in ipairs(scripts) do
             local button = Instance.new("TextButton")
-            button.Parent = frame
+            button.Parent = scrollFrame
             button.Size = UDim2.new(0.9, 0, 0, 50)
-            button.Position = UDim2.new(0.05, 0, 0, 40 + (i - 1) * 60)
             button.Text = script.name
             button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
             button.TextColor3 = Color3.fromRGB(255, 255, 255)
