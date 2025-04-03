@@ -1,0 +1,16 @@
+{
+    "scripts": [
+        {
+            "name": "تشغيل السكربت الأول",
+            "url": "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script1.lua"
+        },
+        {
+            "name": "تشغيل السكربت الثاني",
+            "url": "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script2.lua"
+        },
+        {
+            "name": "تشغيل السكربت الثالث",
+            "url": "https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script3.lua"
+        }
+    ]
+}
