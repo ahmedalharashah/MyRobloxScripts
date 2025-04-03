@@ -88,8 +88,77 @@ local function updateGUI()
             end)
         end
 
+        -- إضافة زر تفعيل وضع الطيران (مرتبط بالسكربت الأول)
+        if #scripts >= 1 then
+            local flightButton = Instance.new("TextButton")
+            flightButton.Parent = scrollFrame
+            flightButton.Size = UDim2.new(0.9, 0, 0, 50)
+            flightButton.Text = "تفعيل الطيران"
+            flightButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            flightButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            flightButton.Font = Enum.Font.SourceSansBold
+            flightButton.TextSize = 18
+
+            -- تشغيل سكربت الطيران عند الضغط
+            flightButton.MouseButton1Click:Connect(function()
+                local success, err = pcall(function()
+                    loadstring(game:HttpGet(scripts[1].url))() -- الطيران مرتبط بالسكربت الأول
+                end)
+
+                if not success then
+                    print("❌ فشل في تفعيل الطيران:", err)
+                end
+            end)
+        end
+
+        -- إضافة زر تفعيل السرعة (مرتبط بالسكربت الثاني)
+        if #scripts >= 2 then
+            local speedButton = Instance.new("TextButton")
+            speedButton.Parent = scrollFrame
+            speedButton.Size = UDim2.new(0.9, 0, 0, 50)
+            speedButton.Text = "تفعيل السرعة"
+            speedButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            speedButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            speedButton.Font = Enum.Font.SourceSansBold
+            speedButton.TextSize = 18
+
+            -- تشغيل سكربت السرعة عند الضغط
+            speedButton.MouseButton1Click:Connect(function()
+                local success, err = pcall(function()
+                    loadstring(game:HttpGet(scripts[2].url))() -- السرعة مرتبطة بالسكربت الثاني
+                end)
+
+                if not success then
+                    print("❌ فشل في تفعيل السرعة:", err)
+                end
+            end)
+        end
+
+        -- إضافة زر النقر التلقائي (مرتبط بالسكربت الثالث)
+        if #scripts >= 3 then
+            local autoClickButton = Instance.new("TextButton")
+            autoClickButton.Parent = scrollFrame
+            autoClickButton.Size = UDim2.new(0.9, 0, 0, 50)
+            autoClickButton.Text = "تفعيل النقر التلقائي"
+            autoClickButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+            autoClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            autoClickButton.Font = Enum.Font.SourceSansBold
+            autoClickButton.TextSize = 18
+
+            -- تشغيل سكربت النقر التلقائي عند الضغط
+            autoClickButton.MouseButton1Click:Connect(function()
+                local success, err = pcall(function()
+                    loadstring(game:HttpGet(scripts[3].url))() -- النقر التلقائي مرتبط بالسكربت الثالث
+                end)
+
+                if not success then
+                    print("❌ فشل في تفعيل النقر التلقائي:", err)
+                end
+            end)
+        end
+
         -- تعديل حجم الـ CanvasSize بناءً على عدد الأزرار
-        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 60 * #scripts)
+        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 60 * (#scripts + 3))  -- إضافة 3 أزرار إضافية
     else
         print("❌ فشل في جلب بيانات السكربتات:", response)
     end
