@@ -61,6 +61,16 @@ script2Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 script2Button.TextColor3 = Color3.fromRGB(255, 255, 255)
 script2Button.Font = Enum.Font.SourceSansBold
 script2Button.TextSize = 18
+-- إنشاء زر السكربت الثالث
+local script3Button = Instance.new("TextButton")
+script3Button.Parent = frame
+script3Button.Size = UDim2.new(0.9, 0, 0, 50)
+script3Button.Position = UDim2.new(0.05, 0, 0.5, 0)
+script3Button.Text = "نقر تلقائي"
+script3Button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+script3Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+script3Button.Font = Enum.Font.SourceSansBold
+script3Button.TextSize = 18
 
 -- تشغيل السكربت الأول عند الضغط على الزر
 script1Button.MouseButton1Click:Connect(function()
@@ -70,6 +80,10 @@ end)
 -- تشغيل السكربت الثاني عند الضغط على الزر
 script2Button.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script2.lua"))()
+end)
+-- تشغيل السكربت الثاني عند الضغط على الزر
+script3Button.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ahmedalharashah/MyRobloxScripts/main/script3.lua"))()
 end)
 
 -- إظهار/إخفاء الواجهة باستخدام زر Insert
